@@ -1,0 +1,147 @@
+#define LS1 4 // left sensor 1
+#define LS2 5 // left sensor 2
+#define MS  6 // middle sensor
+#define RS1 7 // right sensor 1
+#define RS2 15 // right sensor 2
+
+#define LM1 3 // left motor
+#define LM2 5 // left motor
+#define RM1 6 // right motor
+#define RM2 9 // right motor
+int s1,s2,s3,s4,s5, speed=80, slow=40;
+
+
+void setup() {
+  // put your setup code here, to run once:
+
+   Serial.begin(9600);
+  pinMode (LS1, INPUT);
+  pinMode (LS2, INPUT);
+  pinMode (MS, INPUT);
+  pinMode (RS1, INPUT);
+  pinMode (RS2, INPUT);
+
+  pinMode (LM1, OUTPUT);
+  pinMode (LM2, OUTPUT);
+  pinMode (RM1, OUTPUT);
+  pinMode (RM2, OUTPUT);
+
+}
+
+void loop() {
+  sensor();
+
+ if (s1==1 && s2==1 && s3==0 && s4==1 && s5==1)     //forword          //black=0; white=1
+ {
+   forword();
+ }
+ if (s1==1 && s2==0 && s3==0 && s4==0 && s5==1)     //forword          //black=0; white=1
+ {
+   forword();
+ }
+ if (s1==1 && s2==0 && s3==0 && s4==1 && s5==1)     //forword          //black=0; white=1
+ {
+   forword();
+ }
+ if (s1==1 && s2==1 && s3==0 && s4==0 && s5==1)     //forword          //black=0; white=1
+ {
+   forword();
+ }
+ if (s1==0 && s2==1 && s3==1 && s4==1 && s5==1)     //left
+ {
+  left();
+ }
+ if (s1==0 && s2==0 && s3==1 && s4==1 && s5==1)     //left
+ {
+  left();
+ }
+ if (s1==0 && s2==0 && s3==0 && s4==1 && s5==1)     //left
+ {
+  left();
+ }
+ if (s1==1 && s2==0 && s3==1 && s4==1 && s5==1)     //left
+ {
+  left();
+ }
+ if (s1==1 && s2==1 && s3==1 && s4==1 && s5==0)     //right
+ {
+  right();
+ }
+ if (s1==1 && s2==1 && s3==1 && s4==0 && s5==0)     //right
+ {
+  right();
+ }
+ if (s1==1 && s2==1 && s3==0 && s4==0 && s5==0)     //right
+ {
+  right();
+ }
+ if (s1==1 && s2==1 && s3==1 && s4==0 && s5==1)     //right
+ {
+  right();
+ }
+ if (s1==0 && s2==0 && s3==0 && s4==0 && s5==0)
+ {
+  stop();
+ }
+
+}
+
+
+
+
+
+void forword() {
+  // put your main code here, to run repeatedly:
+  analogWrite(3, speed);
+  analogWrite(5, 0);
+  analogWrite(6, speed);
+  analogWrite(9, 0);
+
+}
+
+void left() {
+  // put your main code here, to run repeatedly:
+  analogWrite(3, speed-slow);
+  analogWrite(5, 0);
+  analogWrite(6, speed+slow);
+  analogWrite(9, 0);
+
+}
+
+void right() {
+  // put your main code here, to run repeatedly:
+  analogWrite(3, speed+slow);
+  analogWrite(5, 0);
+  analogWrite(6, speed-slow);
+  analogWrite(9, 0);
+
+}
+
+void stop() {
+  // put your main code here, to run repeatedly:
+  analogWrite(3, 0);
+  analogWrite(5, 0);
+  analogWrite(6, 0);
+  analogWrite(9, 0);
+
+}
+
+void sensor() {
+  // put your main code here, to run repeatedly:
+  s1=digitalRead(LS1);
+  s2=digitalRead(LS2);
+  s3=digitalRead(MS);
+  s4=digitalRead(RS1);
+  s5=digitalRead(RS2);
+
+   Serial.print(s1);
+   Serial.print("   ");
+    Serial.print(s2);
+   Serial.print("    ");
+    Serial.print(s3);
+   Serial.print("    ");
+    Serial.print(s4);
+   Serial.print("    ");
+    Serial.println(s5);
+
+}
