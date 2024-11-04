@@ -1,0 +1,68 @@
+#define LS1 4 // left sensor 1
+#define LS2 5 // left sensor 2
+#define MS 6  // middle sensor
+#define RS1 7 // right sensor 1
+#define RS2 15 // right sensor 2
+
+#define LM1 42 // left motor
+#define LM2 2 // left motor
+#define RM1 40 // right motor
+#define RM2 41 // right motor
+
+int speed = 130;
+int stop = 0;
+
+void setup () {
+  Serial.begin(9600);
+  pinMode (LS1, INPUT);
+  pinMode (LS2, INPUT);
+  pinMode (MS, INPUT);
+  pinMode (RS1, INPUT);
+  pinMode (RS2, INPUT);
+
+  pinMode (LM1, OUTPUT);
+  pinMode (LM2, OUTPUT);
+  pinMode (RM1, OUTPUT);
+  pinMode (RM2, OUTPUT);
+}
+
+void move(int leftSpeed, int rightSpeed) {
+  analogWrite(LM1, leftSpeed);
+  analogWrite(LM2, (leftSpeed > 0) ? 20 : speed); // Set reverse speed if needed
+  analogWrite(RM1, rightSpeed);
+  analogWrite(RM2, (rightSpeed > 0) ? 20 : speed); // Set reverse speed if needed
+}
+
+void loop () {
+  int ls1 = digitalRead(LS1);
+  int ls2 = digitalRead(LS2);
+  int ms = digitalRead(MS);
+  int rs1 = digitalRead(RS1);
+  int rs2 = digitalRead(RS2);
+
+  // STOP
+  if (ls1 == HIGH && ls2 == HIGH && ms == HIGH && rs1 == HIGH && rs2 == HIGH) {
+    move(stop, stop);
+    Serial.println("Stop");
+  } 
+  // FORWARD
+  else if ((ls1 == HIGH && ls2 == LOW && ms == LOW && rs1 == LOW && rs2 == HIGH)||(ls1 == HIGH && ls2 == HIGH && ms == LOW && rs1 == HIGH && rs2 == HIGH)||(ls1 == HIGH && ls2 == LOW && ms == HIGH && rs1 == HIGH && rs2 == HIGH)||(ls1 == LOW && ls2 == LOW && ms == HIGH && rs1 == LOW && rs2 == LOW)||(ls1 == HIGH && ls2 == HIGH && ms == HIGH && rs1 == LOW && rs2 == HIGH)) {
+    move(speed, speed);
+    Serial.println("Forward");
+  } 
+  // TOTAL LEFT
+  else if ((ls1 == LOW && ls2 == LOW && ms == HIGH && rs1 == HIGH && rs2 == HIGH)||(ls1 == LOW && ls2 == LOW && ms == LOW && rs1 == HIGH && rs2 == HIGH)||(ls1 == LOW && ls2 == LOW && ms == LOW && rs1 == HIGH && rs2 == LOW)||(ls1 == LOW && ls2 == LOW && ms == HIGH && rs1 == HIGH && rs2 == LOW)||(ls1 == LOW && ls2 == HIGH && ms == HIGH && rs1 == HIGH && rs2 == HIGH)||(ls1 == HIGH && ls2 == LOW && ms == HIGH && rs1 == HIGH && rs2 == HIGH)||(ls1 == LOW && ls2 == LOW && ms == LOW && rs1 == LOW && rs2 == LOW)) {
+    move(stop, speed);
+    Serial.println("Total Left");
+  } 
+  // TOTAL RIGHT
+  else if ((ls1 == HIGH && ls2 == HIGH && ms == HIGH && rs1 == LOW && rs2 == LOW)||(ls1 == LOW && ls2 == HIGH && ms == LOW && rs1 == LOW && rs2 == LOW)||(ls1 == HIGH && ls2 == HIGH && ms == LOW && rs1 == LOW && rs2 == LOW)||(ls1 == LOW && ls2 == HIGH && ms == HIGH && rs1 == LOW && rs2 == LOW)||(ls1 == HIGH && ls2 == LOW && ms == LOW && rs1 == LOW && rs2 == LOW)) {
+    move(speed, stop);
+    Serial.println("Total Right");
+  } 
+  // DEFAULT CASE
+  else {
+    move(speed, speed); // Default forward
+    Serial.println("Default Forward");
+  }
+}
