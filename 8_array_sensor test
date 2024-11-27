@@ -1,0 +1,60 @@
+#define S1 A0 // left sensor 1
+#define S2 A1 // left sensor 2
+#define S3 A2 // middle sensor
+#define S4 A3 // right sensor 1
+#define S5 A4 // right sensor 2
+#define S6 A5
+#define S7 A6
+#define S8 A7
+
+/*#define LM1 41 // left motor
+#define LM2 40 // left motor
+#define RM1 2 // right motor
+#define RM2 42 // right motor
+int s1,s2,s3,s4,s5,s6,s7,s8, speed=60, slow=55;*/
+
+
+void setup() {
+  // put your setup code here, to run once:
+
+   Serial.begin(9600);
+  pinMode (S1, INPUT);
+  pinMode (S2, INPUT);
+  pinMode (S3, INPUT);
+  pinMode (S4, INPUT);
+  pinMode (S5, INPUT);
+  pinMode (S6, INPUT);
+  pinMode (S7, INPUT);
+  pinMode (S8, INPUT);
+
+
+
+void sensor() {
+  // put your main code here, to run repeatedly:
+  s1=digitalRead(S1);
+  s2=digitalRead(S2);
+  s3=digitalRead(S3);
+  s4=digitalRead(S4);
+  s5=digitalRead(S5);
+  s6=digitalRead(S6);
+  s7=digitalRead(S7);
+  s8=digitalRead(S8);
+  
+
+   Serial.print(s1);
+   Serial.print("   ");
+    Serial.print(s2);
+   Serial.print("    ");
+    Serial.print(s3);
+   Serial.print("    ");
+    Serial.print(s4);
+   Serial.print("    ");
+   Serial.print(s5);
+   Serial.print("    ");
+   Serial.print(s6);
+   Serial.print("    ");
+   Serial.print(s7);
+   Serial.print("    ");
+    Serial.println(s8);
+
+}
